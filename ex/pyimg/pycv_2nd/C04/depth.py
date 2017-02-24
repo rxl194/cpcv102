@@ -21,8 +21,8 @@ def drawlines(img1,img2,lines,pts1,pts2):
       lines - corresponding epilines '''
   print img1.shape
   r,c, ch = img1.shape
-  clr1 = cv2.pyrDown(cv2.imread('./images/stacked1.png', 0))
-  clr2 = cv2.pyrDown(cv2.imread('./images/stacked2.png', 0))
+  clr1 = cv2.pyrDown(cv2.imread('../images/stacked1.png', 0))
+  clr2 = cv2.pyrDown(cv2.imread('../images/stacked2.png', 0))
   for r,pt1,pt2 in zip(lines,pts1,pts2):
       color = tuple(np.random.randint(0,255,3).tolist())
       x0,y0 = map(int, [0, -r[2]/r[1] ])
@@ -32,8 +32,8 @@ def drawlines(img1,img2,lines,pts1,pts2):
       clr2 = cv2.circle(clr2,tuple(pt2),5,color,-1)
       return clr1, clr2
 
-img1 = to_uint8(cv2.pyrDown(cv2.imread('./images/stacked1.png', cv2.COLOR_BGR2GRAY)))  #queryimage # left image
-img2 = to_uint8(cv2.pyrDown(cv2.imread('./images/stacked2.png', cv2.COLOR_BGR2GRAY))) #trainimage # right image
+img1 = to_uint8(cv2.pyrDown(cv2.imread('../images/stacked1.png', cv2.COLOR_BGR2GRAY)))  #queryimage # left image
+img2 = to_uint8(cv2.pyrDown(cv2.imread('../images/stacked2.png', cv2.COLOR_BGR2GRAY))) #trainimage # right image
 
 sift = cv2.xfeatures2d.SIFT_create()
  
