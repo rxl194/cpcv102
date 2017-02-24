@@ -1,6 +1,6 @@
 import cv2
 
-filename = '/home/d3athmast3r/Pictures/vikings.jpg'
+filename = './vikings.jpg'
 
 def detect(filename):
   face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_default.xml')
@@ -13,7 +13,7 @@ def detect(filename):
   
   cv2.namedWindow('Vikings Detected!!')
   cv2.imshow('Vikings Detected!!', img)
-  cv2.imwrite('./vikings_det.jpg', img)
+  #cv2.imwrite('./vikings_det.jpg', img)
   cv2.waitKey(0)
 
 detect(filename)
