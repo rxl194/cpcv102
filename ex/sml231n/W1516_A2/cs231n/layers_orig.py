@@ -24,10 +24,7 @@ def affine_forward(x, w, b):
   # TODO: Implement the affine forward pass. Store the result in out. You     #
   # will need to reshape the input into rows.                                 #
   #############################################################################
-  N = x.shape[0]
-  D = np.prod(x.shape[1:])
-  x2 = np.reshape(x, (N,D))
-  out = np.dot(x2, w) + b
+  pass
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -55,12 +52,7 @@ def affine_backward(dout, cache):
   #############################################################################
   # TODO: Implement the affine backward pass.                                 #
   #############################################################################
-  dx = np.dot(dout, w.T).reshape( x.shape )
-  N = x.shape[0]
-  D = np.prod(x.shape[1:])
-  x2 = np.reshape(x, (N,D))  
-  dw = np.dot(x2.T, dout)
-  db = np.sum(dout, axis=0)
+  pass
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -82,7 +74,7 @@ def relu_forward(x):
   #############################################################################
   # TODO: Implement the ReLU forward pass.                                    #
   #############################################################################
-  out = np.maximum(0, x)
+  pass
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -105,8 +97,7 @@ def relu_backward(dout, cache):
   #############################################################################
   # TODO: Implement the ReLU backward pass.                                   #
   #############################################################################
-  dx = np.array(dout, copy=True)
-  dx[x <= 0] = 0
+  pass
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
@@ -174,25 +165,7 @@ def batchnorm_forward(x, gamma, beta, bn_param):
     # the momentum variable to update the running mean and running variance,    #
     # storing your result in the running_mean and running_var variables.        #
     #############################################################################
-    # Forward pass
-    # Step 1 - shape of mu (D,)
-    mu = 1.0 / float(N) * np.sum(x, axis=0)
-    xmu = x-mu
-    
-    # Step 2 - shape of carre (N,D)
-    carre = xmu**2
-    
-    # Step 3 - shape of var (D,)
-    var = 1.0 / float(N) * np.sum(care, axis=0);
-    
-    # Step 4 - Shape out (N,D)
-    out = gamma * xmu / np.sqrt( var + eps ) + beta
-    
-    running_mean = momentum * running_mean + (1.0 - momentum) * mu
-    running_var = momentum * running_var + (1.0 - momentum) * var    
-    
-    cache = (mu, carre, var, gamma, beta, x, bn_param)
-    
+    pass
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
@@ -203,10 +176,7 @@ def batchnorm_forward(x, gamma, beta, bn_param):
     # and shift the normalized data using gamma and beta. Store the result in   #
     # the out variable.                                                         #
     #############################################################################
-    mu  = running_mean
-    var = running_var
-    out = gamma * (x-mu) / np.sqrt( var + eps ) + beta
-    cache = (mu, var, gamma, beta, bn_param)
+    pass
     #############################################################################
     #                             END OF YOUR CODE                              #
     #############################################################################
