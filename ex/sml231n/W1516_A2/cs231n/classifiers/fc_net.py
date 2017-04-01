@@ -199,7 +199,7 @@ class FullyConnectedNet(object):
     b = {'b' + str(i + 1): np.zeros(dims[i + 1]) for i in range(len(dims) - 1)}  
 
     self.params.update(b)
-    self.params.update(Ws)
+    self.params.update(Ws)    
 
     ############################################################################
     #                             END OF YOUR CODE                             #
@@ -219,9 +219,20 @@ class FullyConnectedNet(object):
     # normalization layer. You should pass self.bn_params[0] to the forward pass
     # of the first batch normalization layer, self.bn_params[1] to the forward
     # pass of the second batch normalization layer, etc.
-    self.bn_params = []
+
     if self.use_batchnorm:
-      self.bn_params = [{'mode': 'train'} for i in xrange(self.num_layers - 1)]
+      print 'We use batchnorm here'
+      self.bn_params = {'bn_param' + str(i + 1): {'mode': 'train',
+                                                  'running_mean': np.zeros(dims[i + 1]),
+                                                  'running_var': np.zeros(dims[i + 1])}
+                        for i in xrange(len(dims) - 2)}
+      gammas = {'gamma' + str(i + 1):
+                np.ones(dims[i + 1]) for i in range(len(dims) - 2)}
+      betas = {'beta' + str(i + 1): np.zeros(dims[i + 1])
+               for i in range(len(dims) - 2)}
+
+      self.params.update(betas)
+      self.params.update(gammas)    
     
     # Cast all parameters to the correct datatype
     for k, v in self.params.iteritems():
@@ -242,7 +253,7 @@ class FullyConnectedNet(object):
     if self.dropout_param is not None:
       self.dropout_param['mode'] = mode   
     if self.use_batchnorm:
-      for bn_param in self.bn_params:
+      for key, bn_param in self.bn_params.iteritems():
         bn_param[mode] = mode
 
     scores = None
@@ -269,6 +280,11 @@ class FullyConnectedNet(object):
       w = self.params['W' + str(idx)]
       b = self.params['b' + str(idx)]
       h = hidden['h' + str(i)]   
+      
+      if self.use_batchnorm and idx != self.L:
+        gamma = self.params['gamma' + str(idx)]
+        beta = self.params['beta' + str(idx)]
+        bn_param = self.bn_params['bn_param' + str(idx)]      
 
       # Computing of the forward pass.
       # Special case of the last layer (output)
