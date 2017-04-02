@@ -273,6 +273,11 @@ class FullyConnectedNet(object):
     # We are gonna store everythin in a dictionnary hidden
     hidden = {}
     hidden['h0'] = X.reshape(X.shape[0], np.prod(X.shape[1:]))    
+    if self.use_dropout:
+      # dropout on the input layer
+      hdrop, cache_hdrop = dropout_forward(
+          hidden['h0'], self.dropout_param)
+      hidden['hdrop0'], hidden['cache_hdrop0'] = hdrop, cache_hdrop    
     
     for i in range(self.L):
       idx = i + 1
@@ -281,6 +286,9 @@ class FullyConnectedNet(object):
       b = self.params['b' + str(idx)]
       h = hidden['h' + str(i)]   
       
+      if self.use_dropout:
+        h = hidden['hdrop' + str(idx - 1)]
+                
       if self.use_batchnorm and idx != self.L:
         gamma = self.params['gamma' + str(idx)]
         beta = self.params['beta' + str(idx)]
