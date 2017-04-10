@@ -1,0 +1,8 @@
+
+using python.logging
+
+ $ python 02_notMNIST_deepnn.py
+ $ bg
+ $ disown <pid>
+ $ tail -f 02_deepnn.log 
+ $ exit
