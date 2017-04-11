@@ -3,10 +3,13 @@
 
 # In[ ]:
 
+import logging
 import numpy as np
 import tensorflow as tf
 from six.moves import cPickle as pickle
 from six.moves import range
+
+logging.basicConfig(filename='02_deepnn.log', level=logging.INFO)
 
 
 # In[2]:
@@ -22,9 +25,9 @@ with open(pickle_file, 'rb') as f:
     test_dataset  = save['test_dataset']
     test_labels  = save['test_labels']
     del save
-    print ("Train set: ", train_dataset.shape, train_labels.shape)
-    print ("Validateion set: ", valid_dataset.shape, valid_labels.shape)
-    print ("Test set: ", test_dataset.shape, test_labels.shape)    
+    logging.info ("Train set: {} {}".format(train_dataset.shape, train_labels.shape))
+    logging.info ("Validateion set: {} {}".format(valid_dataset.shape, valid_labels.shape))
+    logging.info ("Test set: {} {}".format(test_dataset.shape, test_labels.shape))
 
 
 # In[3]:
@@ -40,9 +43,9 @@ def reformat(x, y):
 train_x, train_y = reformat(train_dataset, train_labels)
 valid_x, valid_y = reformat(valid_dataset, valid_labels)
 test_x,  test_y  = reformat(test_dataset,  test_labels)
-print ("Train set: ", train_x.shape, train_y.shape)
-print ("Validateion set: ", valid_x.shape, valid_y.shape)
-print ("Test set: ", test_x.shape, test_y.shape) 
+logging.info ("Train set: {} {}".format(train_x.shape, train_y.shape))
+logging.info ("Validateion set: {} {}".format(valid_x.shape, valid_y.shape))
+logging.info ("Test set: {} {}".format(test_x.shape, test_y.shape))
 
 
 # In[4]:
@@ -123,8 +126,8 @@ num_batch = int(train_size/batch_size)
 offset = 0
 
 with tf.Session(graph=graph) as sess:
-    sess.run(tf.global_variables_initializer())
-    print ("Initialized")
+    sess.run(tf.initialize_all_variables())
+    logging.info ("Initialized")
     for i in range(num_steps):
         batch_x = train_x[offset:offset+batch_size,:]
         batch_y = train_y[offset:offset+batch_size,:]
@@ -133,17 +136,16 @@ with tf.Session(graph=graph) as sess:
         if i % 100 == 0:
             train_accuracy = accuracy.eval( feed_dict = {
                 tf_train_x: batch_x, tf_train_y: batch_y, keep_prob: 1.0 })
-            print ('step %d, train accuracy %g ' % 
-                   (i, train_accuracy))               
+            logging.info ('step %d, train accuracy %g ', i, train_accuracy)               
 #            valid_accuracy = accuracy.eval( feed_dict = {
 #                tf_train_x: valid_x, tf_train_y: valid_y, keep_prob: 1.0 })            
-#            print ('step %d, train accuracy %g, valid accuracy %g' % 
-#                   (i, train_accuracy, valid_accuracy))       
+#            logging.info ('step %d, train accuracy %g, valid accuracy %g', 
+#                   i, train_accuracy, valid_accuracy)       
         optimizer.run( feed_dict = {
             tf_train_x: batch_x, tf_train_y: batch_y, keep_prob: 0.5 })
-    print ('valid accuracy %g' % accuracy.eval(feed_dict = {
+    logging.info ('valid accuracy %g', accuracy.eval(feed_dict = {
         tf_train_x: valid_x, tf_train_y: valid_y, keep_prob: 1.0}))    
-    print ('test accuracy %g' % accuracy.eval(feed_dict = {
+    logging.info ('test accuracy %g',  accuracy.eval(feed_dict = {
         tf_train_x: test_x, tf_train_y: test_y, keep_prob: 1.0}))
 
 
