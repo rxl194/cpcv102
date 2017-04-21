@@ -4,3 +4,4 @@ notMNIST_small*
 .ipy*
 tf_mnist
 model.ckpt*
+logs
