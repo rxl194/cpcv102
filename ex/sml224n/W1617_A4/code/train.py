@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import os
 import json
+import numpy as np
 
 import tensorflow as tf
 
@@ -83,7 +84,10 @@ def main(_):
 
     embed_path = FLAGS.embed_path or pjoin("data", "squad", "glove.trimmed.{}.npz".format(FLAGS.embedding_size))
     vocab_path = FLAGS.vocab_path or pjoin(FLAGS.data_dir, "vocab.dat")
+
     vocab, rev_vocab = initialize_vocab(vocab_path)
+    glove_npz = np.load(embed_path)
+    glove = glove_npz['glove']
 
     encoder = Encoder(size=FLAGS.state_size, vocab_dim=FLAGS.embedding_size)
     decoder = Decoder(output_size=FLAGS.output_size)
