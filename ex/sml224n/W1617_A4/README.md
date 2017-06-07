@@ -21,3 +21,8 @@ $ python code/train.py
 
 This ensures that any files created in the process don't pollute the code directoy.
 
+
+# Reference
+https://github.com/stanfordnlp/cs224n-winter17-notes
+https://github.com/allenai/bi-att-flow
+https://www.youtube.com/watch?v=Vjwu9FcuDm4

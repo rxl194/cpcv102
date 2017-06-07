@@ -25,10 +25,34 @@ def get_optimizer(opt):
     return optfn
 
 
+
 class Encoder(object):
-    def __init__(self, size, vocab_dim):
-        self.size = size
-        self.vocab_dim = vocab_dim
+    def __init__(self, pretrained_embeddings, max_context_length, max_ques_length, batch_size, embed_size):
+        self.pretrained_embeddings = pretrained_embeddings
+        self.max_length      = max_context_length
+        self.question_length = max_ques_length
+        self.answer_dim      = 2
+        self.batch_size      = batch_size
+        self.embed_size      = embed_size
+
+    def add_placeholders(self):
+        self.context_placeholder  = tf.placeholder(tf.int32, shape=(None, self.max_length))
+        self.mask_placeholder     = tf.placeholder(tf.bool,  shape=(None, self.max_length))
+        self.answer_placeholder   = tf.placeholder(tf.int32, shape=(None, self.answer_dim))
+        self.question_placeholder = tf.placeholder(tf.int32, shape=(None, self.question_length))
+
+    def create_feed_dict(self, context_batch, mask_batch, question_batch, answer_batch):
+        feed_dict = {}
+        feed_dict[self.context_placeholder]  = context_batch
+        feed_dict[self.mask_placeholder]     = mask_batch
+        feed_dict[self.question_placeholder] = question_batch
+        feed_dict[self.answer_placeholder]   = answer_batch
+        return feed_dict
+
+    def add_embedding(self):
+        context_embeddings = tf.nn.embedding_lookup(self.pretrained_embeddings, self.context_placeholder)
+        context_embeddings = tf.reshape( context_embeddings, shape=[-1, Config.embed_size] )
+
 
     def encode(self, inputs, masks, encoder_state_input):
         """
